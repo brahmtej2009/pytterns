@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "get-pytterns"
+version = "0.1.0"
+authors = [
+  { name="Brahmtej Singh", email="brahmtejsawhney@gmail.com" },
+]
+description = "A modular CLI pattern engine"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "colorama",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
