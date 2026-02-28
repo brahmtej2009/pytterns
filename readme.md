@@ -220,8 +220,60 @@ In this, Size (int) is the shape's size, and Center is a boolean telling if trig
 
 After this, you can just make your pattern function, and print the output in that function itself and the Pytterns takes care of everything!
 
+# Panels
+Pytterns can also make Panels. To make a Panel List, you can use the ``pt.panel()`` Function
+
+Panels are extremely customizable. You can use the following arguments by default.
+
+### Size [int]
+> Horizontal Width of the Panel
+
+### Center [bool]
+> To horizontally center the panel in terminal
+
+### Title [str]
+> The Heading/Title of the panel
+### Content [list]
+> List of items to add to contents of panel
+### Padding [int]
+> Set minimum distance of text from borders
+
+### Customize Border Characters & Corners Characters
+- >```v_border``` Vertical Line Characters
+- >```h_border``` Horizontal Line Characters
+- >```top_left``` Top Left Corner Merger Character
+- >```top_right``` Top Right Corner Merger Character
+- >```bottom_left``` Bottom Left Corner Merger Character
+- >```bottom_right``` Bottom Right Corner Merger Character
+
+### border_bold [bool]
+> This makes the border characters bold, thick and bright.
+
+### center_content [bool]
+> This makes the content itself center within the panel's borders.
+
+All Color args work same as they did in Shapes, and would work same in all types of patterns.
+
+### Examples for Panels.
+```py
+pt.panel(
+    size=80, 
+    content=["Onion","Carrot","Pencils","RTX4090"],
+    title="Shopping List",
+    padding=2,
+    border_bold=True,
+    center_content=False,
+    color="Magenta"
+)
+```
+You may also use Colorama's editing in the content, to give each line its own color and style. The framework adapts accordingly.
+
+
 # Advanced Use
 With pytterns, you can also make terminal animations/loading-graphics.
+
+
+### Eg. 1
 
 For Example, if you want fast upward moving arrows, use this:
 
@@ -239,10 +291,10 @@ Output:
 
 ![Upward Moving Arrows](https://i.ibb.co/Y451nNXb/image.png)
 
-*It would be animated due to loop, demo videos in /media folder
+*It would be animated due to loop, demo videos in /images folder
 
 
-
+### Eg. 2
 Or, For Example you can use my favorite, the Square Loading:
 ```py
 import time,os
@@ -253,8 +305,46 @@ while True:
         time.sleep(0.05)
         os.system("cls" if os.name == "nt" else "clear")
 ```
-For this you would need to see the video at /media folder
+For this you would need to see the video at /images folder
 
+### Eg. 3
+You can use this to make a fun dynamic display of text through Panels.
+
+```py
+import time, os
+from colorama import Fore, Style
+
+from pytterns import Pytterns
+pt = Pytterns()
+
+os.system('cls' if os.name == 'nt' else 'clear')
+print("\033[?25l", end="") 
+
+logs = [
+    f"{Fore.CYAN}My code is hungry... it hasn't seen a 'Star' in weeks.",
+    f"{Fore.RED}If you use 1960s Print() statements, {Style.BRIGHT}Users CRY.",
+    f"{Fore.GREEN}I spent {Style.BRIGHT}3 business days {Style.NORMAL}fixing this right border.",
+    f"{Fore.YELLOW}My family thinks I'm {Style.BRIGHT}studying.{Style.NORMAL} I'm actually just making {Style.BRIGHT}boxes centered.{Style.NORMAL}",
+    f"{Fore.LIGHTBLUE_EX}Please use Pytterns or I'll be forced to use Light Mode.",
+    f"{Fore.MAGENTA}Status: Desperately seeking validation (and a snack).",
+    f"{Fore.MAGENTA}and Maybe a Break.. idk."
+]
+
+try:
+    for i in range(1, len(logs) + 1):
+        if i ==len(logs):
+            time.sleep(4)
+        print("\033[H", end="") 
+        pt.panel(size=80, content=logs[:i], title="DEV-DESPERATION",padding=2,
+                border_bold=True, center_content=False,color="Magenta"
+        )
+        time.sleep(3)
+    print(f"\n{Fore.WHITE}{Style.BRIGHT}   >> Hehe hope this was fun :)")
+finally:
+    print("\033[?25h")
+```
+
+Video in /images for the output
 
 # Contribution
 

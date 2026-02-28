@@ -35,7 +35,7 @@ def draw(size, center, char="#", filler=" ", hollow=False):
                 
                 gap = ""
                 for s in range(spaces):
-                    gap = gap + " "
+                    gap = gap + filler
                 
                 print(char + gap + char)
         else:

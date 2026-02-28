@@ -1,17 +1,8 @@
-# This file takes in all the patterns from the /patterns folder, and makes functions out of it.
-# For example, if you put a pattern file in the /patterns folder called "square.py", you can then use pytterns.py.square(<args>) to trigger the pattern.
-# Its really simple to add more patterns and features to this.. to do that, just add a new .py file in the /patterns folder.Write your entire pattern in a draw() function that takes in the size and center and other optional args as u wish and make anything you want after that.
-
-
-#NOTE: This file is having some AI generated code due to complexity and security concerns so if someone tries to use it for production, it doesnt cause boom booms from malicious scripts.
-# The code is designed to be secure by scanning the pattern files for potentially dangerous commands before executing them. If a pattern file contains any of the banned words, it will not be executed and a security alert will be printed instead. This helps to prevent malicious code from being run through the patterns library.
-# This approach is kinda basic, and I'm open to suggestions for improving the security of the library. The current implementation is a simple keyword scan, which may not catch all malicious code, but it provides a basic level of protection against common dangerous commands.
-
 import os
 import importlib.util
 import shutil
 import io
-import sys
+import re
 from contextlib import redirect_stdout
 from colorama import Fore, Style, init
 
@@ -19,11 +10,8 @@ init(autoreset=True)
 
 class Pytterns:
     def __init__(self):
-        # This part ensures the library finds its own built-in patterns after pip install
         self.internal_dir = os.path.join(os.path.dirname(__file__), "patterns")
-        # This looks for a 'patterns' folder in the user's current project
         self.user_dir = "patterns"
-        
         self.width = shutil.get_terminal_size().columns
         self.BANNED_WORDS = [
             "os.", "subprocess", "eval(", "exec(", "open(", 
@@ -37,24 +25,23 @@ class Pytterns:
             "cyan": Style.BRIGHT+Fore.CYAN, "white": Style.BRIGHT+Fore.WHITE, "reset": Fore.RESET
         }
 
-    def _is_safe(self, file_path): # AI Generated for security
-        with open(file_path, "r") as f:
+    def _is_safe(self, file_path):
+        with open(file_path, "r", encoding='utf-8') as f:
             content = f.read()
             for word in self.BANNED_WORDS:
                 if word in content: return False, word
         return True, None
 
+    def _strip_ansi(self, text):
+        return re.sub(r'\x1B(?:[@-Z\\-_]|\[[0-9;]*[ -/]*[@-~])', '', text)
+
     def __getattr__(self, name):
-        # We check the local folder first, then the library's internal folder
         user_file = os.path.join(self.user_dir, f"{name}.py")
         lib_file = os.path.join(self.internal_dir, f"{name}.py")
 
-        if os.path.exists(user_file):
-            file_path = user_file
-        elif os.path.exists(lib_file):
-            file_path = lib_file
-        else:
-            raise AttributeError(f"Pattern '{name}' not found.")
+        if os.path.exists(user_file): file_path = user_file
+        elif os.path.exists(lib_file): file_path = lib_file
+        else: raise AttributeError(f"Pattern '{name}' not found.")
 
         safe, dangerous_word = self._is_safe(file_path)
         if not safe:
@@ -65,31 +52,27 @@ class Pytterns:
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
-        def wrapper(*args, center=False, color=None, **kwargs): #This is the AI Part
+        def wrapper(*args, center=False, color=None, **kwargs):
+            # Calculate prefix here to pass it into the draw function
+            ansi_prefix = self.color_map.get(str(color).lower(), "") if color else ""
+            
             f = io.StringIO()
             with redirect_stdout(f):
                 try:
-                    # Pass center to the draw function so it knows to skip manual padding
-                    module.draw(*args, center=center, **kwargs)
+                    # Added ansi_prefix to kwargs so pattern can fix right-side border color
+                    module.draw(*args, center=center, ansi_prefix=ansi_prefix, color=color, **kwargs)
                 except Exception as e:
                     print(f"Error drawing {name}: {e}")
             
             output = f.getvalue().splitlines() 
-            ansi_color = self.color_map.get(str(color).lower(), "") if color else ""
-            
             for line in output:
-                # Strip leading/trailing spaces if centering to avoid double-offset
-                if center == True:
-                    clean_line = line.strip()
-                else:
-                    clean_line = line
-                
-                formatted_line = ansi_color + clean_line
+                # Apply the global color prefix to the whole line
+                formatted_line = ansi_prefix + line
                 
                 if center:
-                    # Adjust centering width for the length of hidden ANSI color codes
-                    actual_width = self.width + len(ansi_color)
-                    print(formatted_line.center(actual_width), flush=True)
+                    real_width = len(self._strip_ansi(line))
+                    padding = (self.width - real_width) // 2
+                    print(" " * max(0, padding) + formatted_line, flush=True)
                 else:
                     print(formatted_line, flush=True)
         
