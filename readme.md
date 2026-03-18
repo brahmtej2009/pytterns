@@ -198,30 +198,39 @@ Output:
 *-
 ```
 
-# Custom Templates
-Through templates, we can make custom patterns based on our own code, and seamlessly use it just like we did with the default code.
+# 3D Shapes
+## CUBE
+You can make a revolving or static CUBE in Pytterns, which is super cool. To do this, simply use the `pt.cube()` function. Use the following args for customization.
 
-This may sound difficult, but we don't even need a bit of advanced programming for this.
+### char [str]
+Defines the character used for the creation of cube
+### size [int]
+Defines the size of cube. This is NOT the number of characters in an edge of a cube. A sweet spot is 100, Cube would not be visible for size under 40
+### rotate [bool]
+If enabled, the cube would show a rotating animation and show all of its sides.
+### rot_speed [int]
+This is a really sensitive parameter, it defines the rotating speed of the cube. `5` is a sweet spot
+### Duration [int]
+This is the amount of seconds you want the cube to rotate for. Set to `None` to keep it forever in loop. (Only works when rotation is activated)
+### refresh_time [int]
+This isnt usually to be messed with. It is the time after which the loop is re-run for the next frame. `0.03` is good as it gives about 33 FPS
+### angle [int]
+Angle in radian for the cube to be displayed (if rotation off) or the cube to start rotating from (if rotation enabled)
+### colored [bool]
+By default, the edges of cube are colored for full 3d effect. It can be set to default terminal color if this is set to `False`.
+### clr_screen [bool]
+This isnt usually to be messed with. It defines if the new frame should be over written on the old frame or the screen should be completely cleared and re written for next frame.
 
-### Getting Started:
-Firstly ensure Pytterns is installed in your project. Then make a folder ``/patterns`` in your project's root directory.
+##### Note: Cubes always remain centered because they need space to show the 3d effect and revolve.
 
-You can create files in this folder now, and through this you can add custom patterns to your projects.
+<video controls src="https://github.com/brahmtej2009/pytterns/raw/refs/heads/main/images/large_cube.mp4" title="Large Cube"></video>
+<video controls src="https://github.com/brahmtej2009/pytterns/raw/refs/heads/main/images/small_cube.mp4" title="Little Cube"></video>
 
-Once you make a .py file, start with the ``draw()`` function and define the args you need for the pattern you are trying to make. *Size and Center is always must to keep, rest args are based on your wish.*
 
-For Example, this is the function definition for Triangles.
-```py
-def draw(size,center, char="*", filler=" ", hollow=False, direction="left", invert=False):
-```
-In this, Size (int) is the shape's size, and Center is a boolean telling if trigger has opted for centering or not.
 
-⭐**Note: If you wish to use centering in your code, you need not to make any centering system in your template file. Just make sure its compatible with our centering and you are good to go. Similarly, you also do not need to worry about colors, those get added automatically too!**
-
-After this, you can just make your pattern function, and print the output in that function itself and the Pytterns takes care of everything!
-
+---
 # Panels
-Pytterns can also make Panels. To make a Panel List, you can use the ``pt.panel()`` Function
+Pytterns can also make Panels. To make a Panel or List, you can use the ``pt.panel()`` Function
 
 Panels are extremely customizable. You can use the following arguments by default.
 
@@ -268,6 +277,66 @@ pt.panel(
 ```
 You may also use Colorama's editing in the content, to give each line its own color and style. The framework adapts accordingly.
 
+<video controls src="https://github.com/brahmtej2009/pytterns/raw/refs/heads/main/images/dev-desperation.mp4" title="Panel Demo"></video>
+
+# Progress Bars
+Now, you can make progress bars on pytterns too! Use the `pt.progress()` function. The following args can be used for customization.
+
+### size [int]
+Defines the horizontal width of the progress bar. If its supposed to expand till the edges, use `-1` or leave blank.
+
+### center [bool]
+Centers the progress bar horizontally.
+
+### progress [int]
+Defines the progress of the bar. If on a size 100, a progress of 50 is passed, the bar would show half filled.
+
+### fill [str]
+Defines what character to fill in the shaded region of the loading bar
+
+### blank [str]
+Defines what character to fill in the blank region of the loading bar
+
+### fill_color [str]
+Defines the color of filled/shaded region
+
+### blank_color [str]
+Defines the color of the blank region
+
+###### Note: You should be using 1 char for the fill and blank arg. If you are using 2 or more char, divide the size with the same number to keep the size accurate.
+
+<video controls src="https://github.com/brahmtej2009/pytterns/raw/refs/heads/main/images/loading_bar.mp4" title="CPU USAGE through Progress Bars"></video>
+
+# Security Bypass
+The program has built in security for preventing malicious script runs. If the security is breaking your custom themes, and you are confident that its safe, you can use this to load pytterns without security.
+
+```py
+from pytterns import Pytterns
+pt=Pytterns(break_my_system_security_and_allow_destruction=True)
+```
+
+
+# Custom Templates
+Through templates, you can make custom patterns based on our own code, and seamlessly use it just like you did with the default code.
+
+This may sound difficult, but you don't even need a bit of advanced programming for this.
+
+### Getting Started:
+Firstly ensure Pytterns is installed in your project. Then make a folder ``/patterns`` in your project's root directory.
+
+You can create files in this folder now, and through this you can add custom patterns to your projects.
+
+Once you make a .py file, start with the ``draw()`` function and define the args you need for the pattern you are trying to make. *Size and Center is always must to keep, rest args are based on your wish.*
+
+For Example, this is the function definition for Triangles.
+```py
+def draw(size,center, char="*", filler=" ", hollow=False, direction="left", invert=False):
+```
+In this, Size (int) is the shape's size, and Center is a boolean telling if trigger has opted for centering or not.
+
+⭐**Note: If you wish to use centering in your code, you need not to make any centering system in your template file. Just make sure its compatible with our centering and you are good to go. Similarly, you also do not need to worry about colors, those get added automatically too!**
+
+After this, you can just make your pattern function, and print the output in that function itself and the Pytterns takes care of everything!
 
 # Advanced Use
 With pytterns, you can also make terminal animations/loading-graphics.

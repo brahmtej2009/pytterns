@@ -1,10 +1,10 @@
-import re
+import re,sys
 from colorama import Style
 
 def _strip_ansi(text):
     return re.sub(r'\x1B(?:[@-Z\\-_]|\[[0-9;]*[ -/]*[@-~])', '', text)
 
-def draw(size, center, content, title=None, padding=1, 
+def draw(size,content,center, title=None, padding=1, 
          v_border=None, h_border=None, 
          top_left=None, top_right=None, bottom_left=None, bottom_right=None,
          border_bold=False, center_content=True, 
@@ -23,19 +23,22 @@ def draw(size, center, content, title=None, padding=1,
     # 3. Geometry
     inner_width = size - 2
     content_width = inner_width - (2 * padding)
-
+#    sys.stdout.write("\033[?25l")
     # 4. Header
+
     if title:
-        title_str = f" {title} "
-        bar_len = inner_width - len(title_str)
+        title_stripped = _strip_ansi(str(title))  # ✅ Real length
+        title_display_len = len(title_stripped) + 2  # +2 for spaces
+        bar_len = inner_width - title_display_len
         l_bar = h * (bar_len // 2)
         r_bar = h * (bar_len - len(l_bar))
-        # Sandwich: [Color]Border+Bar [Reset]Title [Color]Bar+Border
-        print(f"{ansi_prefix}{tl}{l_bar}{Style.RESET_ALL}{title_str}{ansi_prefix}{r_bar}{tr}")
+        l1=f"{ansi_prefix}{tl}{l_bar}{Style.RESET_ALL} {title} {ansi_prefix}{r_bar}{tr}\n"
+
     else:
-        print(f"{ansi_prefix}{tl}{h * inner_width}{tr}")
+        l1=f"{ansi_prefix}{tl}{h * inner_width}{tr}\n"
 
     # 5. Content
+    l2=""
     pad_str = " " * padding
     for line in content:
         real_len = len(_strip_ansi(line))
@@ -49,7 +52,10 @@ def draw(size, center, content, title=None, padding=1,
             formatted = f"{line}{' ' * diff}"
         
         # Perfect Vertical Alignment: [Color]V [Reset]Pad+Text [Color]Pad+V
-        print(f"{ansi_prefix}{v}{Style.RESET_ALL}{pad_str}{formatted}{Style.RESET_ALL}{ansi_prefix}{pad_str}{v}")
+        l2+=f"{ansi_prefix}{v}{Style.RESET_ALL}{pad_str}{formatted}{Style.RESET_ALL}{ansi_prefix}{pad_str}{v}\n"
 
     # 6. Footer
-    print(f"{ansi_prefix}{bl}{h * inner_width}{br}")
+    l3=f"{ansi_prefix}{bl}{h * inner_width}{br}"
+    
+    sys.stdout.write(l1+l2+l3)
+    sys.stdout.flush()

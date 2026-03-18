@@ -2,7 +2,7 @@
 
 # This rectangle is measured by number of characters, so due to the 2:1 Char ratio, you need to input correct size to get the desired rectangle. 
 
-def draw(length, width, center, char="*", filler=" ", hollow=False):
+def draw(length, width, center, char="*", filler=" ", hollow=False,**kwargs):
 
     size = length if length > width else width
 

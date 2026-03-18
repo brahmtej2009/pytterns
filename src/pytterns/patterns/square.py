@@ -1,47 +1,25 @@
-# Square pattern -- DEFAULT
-
-# Size is the length of the side of square, Char is the character to use for the square, and Filler is the character to use for the space between the characters.
-# By default, the Char is "*" and the Filler is " ", but you can change them to whatever you like through args.
-# You can also add more arguments to the pattern, but that depends on how you want to customize it.
-
-# Have ideas? Instead of editing this file locally, Submit your idea on github and I might add it to the library for public use!
-# You may also make a new file in this folder, and add your own pattern there, just make sure to follow the same structure as this file, and have a draw() function with arguments you want for processing.
-
-
-#NOTE: This works better for smaller numbers, but breaks for bigger ones due to terminal text ratio. For a bigger square, use the reg_square pattern.
-
-
-def draw(size, center, char="*", filler=" ", hollow=False):
-
+def draw(size, *args, center=False, char="*", filler=" ", hollow=False, ansi_prefix="", **kwargs):
     for row in range(size):
-        
-
-        if hollow == False:
+        if not hollow:
+            # Full square
             line = ""
             for col in range(size):
-                if col == size - 1:
-                    line = line + char
-                else:
-                    line = line + char + filler
-            print(line)
-            
+                line += char + filler
+            line = line.rstrip(filler)  # Remove trailing filler
+            print(f"{ansi_prefix}{line}")
         else:
-            
+            # Hollow square - PERFECT EDGES
             if row == 0 or row == size - 1:
+                # Top/Bottom: FULL border with $...$
                 line = ""
                 for col in range(size):
-                    if col == size - 1:
-                        line = line + char
-                    else:
-                        line = line + char + filler
-                print(line)
-            
-            
+                    line += char + filler
+                line = line.rstrip(filler)
+                print(f"{ansi_prefix}{line}")
             else:
-                line = char
-                
-                
-                full_row_len = len((char + filler) * (size - 1) + char)
-                middle_section = filler * (full_row_len - (len(char) * 2))
-                
-                print(char + middle_section + char)
+                # Middle: $ + filler + $
+                left_edge = char
+                right_edge = char
+                middle_fillers = filler * ((size * 2 - 3))  # Exact match length
+                line = left_edge + middle_fillers + right_edge
+                print(f"{ansi_prefix}{line}")

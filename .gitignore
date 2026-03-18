@@ -16,7 +16,10 @@ __pycache__/
 # Dev / test files
 run.py
 try.py
-
+verify.py
+cuboid.py
+check.py
+pyproject.toml
 # OS junk
 Thumbs.db
 .DS_Store
@@ -24,3 +27,4 @@ Thumbs.db
 # Virtual env
 venv/
 .env/
+.gitignore

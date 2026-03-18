@@ -7,7 +7,7 @@
  #NOTE: I Used AI for this because making a regular square pattern is a bit more complex than the other patterns, and I wanted to make sure it looks good and works well. The AI helped me to come up with a design that takes into account the aspect ratio of the terminal characters, and creates a square that looks more like a square than a rectangle.
 # I also made sure sure it has the same customization options as the other patterns, such as hollow and filler etc.
    
-def draw(size, center, char="#", filler=" ", hollow=False):
+def draw(size, center, char="#", filler=" ", hollow=False,**kwargs):
     line_str = ""
     for i in range(size):
         if i == size - 1:

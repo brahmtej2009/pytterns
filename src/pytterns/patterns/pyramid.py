@@ -11,7 +11,7 @@
 
 
 
-def draw(size,center, char="#",filler=" ", hollow=False,invert=False):
+def draw(size,center, char="#",filler=" ", hollow=False,invert=False,**kwargs):
     if hollow:
         for i in range(1, size + 1):
             for j in range(1, 2 * size):

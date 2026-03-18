@@ -2,7 +2,7 @@
 # Looking for improvements in this.
 
 
-def draw(size,center, char="*", filler=" ", hollow=False, direction="left", invert=False):
+def draw(size,center, char="*", filler=" ", hollow=False, direction="left", invert=False,**kwargs):
 
 # In this we basically take direction, left or right, and based on that we make a right angled triangle. Then to make its origion on top, we use invert.
 # Through this we can make all 4 types of right angled triangles.
