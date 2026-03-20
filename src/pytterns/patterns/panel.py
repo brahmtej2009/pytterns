@@ -10,36 +10,37 @@ def draw(size,content,center, title=None, padding=1,
          border_bold=False, center_content=True, 
          ansi_prefix="", **kwargs):
 
-    # 1. Defaults & Bold Logic (Using the chars you liked)
+    # This is the border's char, this specific is used as it uses the full height/width of ascii block and merges properly
     v, h = ("┃", "━") if border_bold else ("│", "─")
     tl, tr = ("┏", "┓") if border_bold else ("┌", "┐")
     bl, br = ("┗", "┛") if border_bold else ("└", "┘")
 
-    # 2. Manual Overrides (Highest priority)
+    
     v, h = v_border or v, h_border or h
     tl, tr = top_left or tl, top_right or tr
     bl, br = bottom_left or bl, bottom_right or br
 
-    # 3. Geometry
+    # Default padding and user defined padding
     inner_width = size - 2
     content_width = inner_width - (2 * padding)
-#    sys.stdout.write("\033[?25l")
-    # 4. Header
+
 
     if title:
-        title_stripped = _strip_ansi(str(title))  # ✅ Real length
-        title_display_len = len(title_stripped) + 2  # +2 for spaces
+        title_stripped = _strip_ansi(str(title))  # Title with color codes fixed
+        title_display_len = len(title_stripped) + 2  # Some more padding
         bar_len = inner_width - title_display_len
         l_bar = h * (bar_len // 2)
         r_bar = h * (bar_len - len(l_bar))
-        l1=f"{ansi_prefix}{tl}{l_bar}{Style.RESET_ALL} {title} {ansi_prefix}{r_bar}{tr}\n"
+        l1=f"{ansi_prefix}{tl}{l_bar}{Style.RESET_ALL} {title} {ansi_prefix}{r_bar}{tr}\n" # Rendered line 1, with title
 
     else:
-        l1=f"{ansi_prefix}{tl}{h * inner_width}{tr}\n"
+        l1=f"{ansi_prefix}{tl}{h * inner_width}{tr}\n" # IF no title, straight line
 
-    # 5. Content
+  
     l2=""
     pad_str = " " * padding
+    
+    # Each element in list is a new line, and it gets rendered here in a multiline string
     for line in content:
         real_len = len(_strip_ansi(line))
         diff = content_width - real_len
@@ -51,11 +52,11 @@ def draw(size,content,center, title=None, padding=1,
         else:
             formatted = f"{line}{' ' * diff}"
         
-        # Perfect Vertical Alignment: [Color]V [Reset]Pad+Text [Color]Pad+V
-        l2+=f"{ansi_prefix}{v}{Style.RESET_ALL}{pad_str}{formatted}{Style.RESET_ALL}{ansi_prefix}{pad_str}{v}\n"
+        
+        l2+=f"{ansi_prefix}{v}{Style.RESET_ALL}{pad_str}{formatted}{Style.RESET_ALL}{ansi_prefix}{pad_str}{v}\n" # Rendered multiline string with right colors and borders
 
-    # 6. Footer
+    # Add the last row on the bottom of the panel to complete the border
     l3=f"{ansi_prefix}{bl}{h * inner_width}{br}"
     
-    sys.stdout.write(l1+l2+l3)
+    sys.stdout.write(l1+l2+l3) # Sum write flush
     sys.stdout.flush()

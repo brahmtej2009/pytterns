@@ -226,9 +226,113 @@ This isnt usually to be messed with. It defines if the new frame should be over 
 <video controls src="https://github.com/brahmtej2009/pytterns/raw/refs/heads/main/images/large_cube.mp4" title="Large Cube"></video>
 <video controls src="https://github.com/brahmtej2009/pytterns/raw/refs/heads/main/images/small_cube.mp4" title="Little Cube"></video>
 
-
+# Cuboid
+Its similar to a cube, but takes l,b,h (As a Ratio) parameters which get multiplied with size to determine the length of the edge. You can use the following args for customization.
+### Size [int]
+Defines the size of the cuboid
+### l [int]
+This is the length of the cuboid
+### b [int]
+This is the breadth of the cuboid
+### h [int]
+This is the height of the cuboid
+### char [str]
+This is the character which is used to build the cuboid
+### rotate [bool]
+spins the cuboid around to show all its sides for full 3d effect
+### rot_speed [int/float] 
+If rotation is enabled, this defines the speed of rotation
+### duration [int]
+If rotation is enabled, this is the time in seconds for which the cuboid is to be rotated. If no value is provided, it would run indefinitely
+### angle [int]
+This is the angle in radian for which the cube is to be displayed (if `rotate=False`), or the angle from which the rotation is to be started (if `rotate=True`)
+### colored [bool]
+This colors the edges of the cuboid to give the full 3d effect
+### refresh_time [int/float]
+This is the time in seconds after which the next frame should be generated. Generally, there is no need to mess with this.
+### clr_screen [bool]
+If enabled, it clears the entire screen before displaying the next frame. Generally there is no need to mess with this.
 
 ---
+
+# Typewrite
+You can write really fancy text through `pt.typewrite()` Function. The following args could be used for customization.
+Using Typewrite is a bit different from the other functions, as its content needs to be written properly for the proper effect.
+
+### content [list]
+To write the content for typewrite, you need to create a list with mainly 3 types of data.
+- Color [str]
+    > Color: The color for the text, can be defined using Double Backslash ("\\\\") followed by color name. So, red is "\\\\red" and so on.
+- Delay [int/float]
+    > Delay: It is the wait time the typewriter must do before moving on to the next element in the list. It can be defined by just adding a Float or an Int in the list.
+- Text to write [str]
+    > Text to write: This is the text which the typewriter would type, it should be string ONLY.
+
+    So, to type `"Hello, World!"` with `"Hello,"` in Yellow and `"World!"` in Blue, with a delay of 2 seconds in both words, use this.
+    ```py
+    pt.typewrite(["\\yellow","Hello,",2,"\\blue", "World!"])
+    ```
+### center [bool]
+If set to True, the text would be centered, else, would stick to the left side.
+### delay [int/float]
+Defines the wait time of the typewriter in between each `letter` , `word` or `sentence`. Type of delay depends on the **selected mode**. In simple words, if mode is set to `"letter"` , then this delay would trigger after typing every letter, to give that typewriting feel.
+### Mode [str]
+This defines the Style in which the text is typed.
+| Mode | What it does |
+|---|---|
+| ``letter`` | Types the stuff, letter by letter, with each letter having delay of the set value |
+| ``word`` | Types the stuff word by word, with each word havin the delay of the set value |
+| ``sentence`` | Types the entire element in one go, with each element having delay of set value| 
+
+### reset_end [bool]
+When you pass a color, it can work with multiple text elements in a string. So, if you define a color once at start of your content, all the rest of your elements would follow that same color.
+
+This setting stops the color from bleeding to the next terminal output by re-setting the terminal colors after the entire typewrite statement is done. 
+
+If set to false, triggering a color yellow once would lead to the same color continuing for your future terminal outputs too, even if its not typewrite function.
+
+### end [str]
+This works completely same as the ``print()``'s end, it defines the last char of the typewriting. It is `"\n"` by default.
+
+
+### splitter [str]
+When in word mode, splitter can be used if the words are to be split through a specific character.
+
+Eg. **splitter="e"**
+
+```
+Content: "HeyeWorlde!"
+Split Output: H, y, World, !
+```
+
+(By default splitter is set to a space, so it splits on every space to separate words of a sentence, Generally, You do not need to edit this)
+
+# Rain
+You can make a cool hacker rain effect through `pt.rain()`, and like all the other functions, you can customize a LOT too, use these args!
+### size
+Determines the vertical size of the hacker rain. set to `None` to run by duration.
+### center
+Centers the hacker rain in the terminal
+### duration
+The time in seconds to run the hacker rain, set both `duration` and `size` to `None` to run infinitely until killed.
+### chars [str]
+The characters which should be randomized to create the hacker rain effect. By default it is set to ``"X01@#$%&*"``
+### delay [int]
+The time in seconds after which a new row should appear in terminal. This is used to control speed. Higher delay=Lower speed.
+### color [str]
+Name of the color of the main random text.
+### glitch_chance [int]
+The probability out of 100 for a character to have the glitch effect.
+### glitch_color [str]
+Separate color of the glitched characters.
+### prefix [str]
+If any prefix has to be applied on start of each line on the left side, it can be done from here.
+### bold [bool]
+If the characters should be bold or not.
+### density [int]
+The probability out of 100 for a character to be present at a space. In simple words, reducing it would cause random empty spaces in the effect.
+
+#### Note: Keep both size and duration as `None` for the rain to run infinitely.
 # Panels
 Pytterns can also make Panels. To make a Panel or List, you can use the ``pt.panel()`` Function
 

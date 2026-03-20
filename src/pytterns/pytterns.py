@@ -22,9 +22,9 @@ class Pytterns:
         if not break_my_system_security_and_allow_destruction:
             self.BANNED_WORDS = [
                 "os.", "subprocess", "eval(", "exec(", "open(", 
-                "shutil", "getattr", "setattr", "__subclasses__", 
+                 "getattr", "setattr", "__subclasses__", 
                 "builtins", "pickle", "socket", "requests", "importlib",
-                "sys.", "threading", "multiprocessing"
+                "threading", "multiprocessing"
             ]
         else:
             self.BANNED_WORDS=[]

@@ -1,3 +1,5 @@
+# This file uses some code by AI due to all the mathematical and trigonometric stuff used which is WAYY out of my understanding.
+
 import numpy as np
 import time
 import shutil
@@ -50,7 +52,7 @@ def draw(char="█", size=100, rot_speed=5,refresh_time=0.03, rotate=False, dura
             
             scr = []
             for v in rv:
-                # Vertical stretch (rows/4) vs Horizontal (cols/6) to keep cube square
+                # Vertical stretch (rows/4) vs Horizontal (cols/6) to keep cube symmetric
                 scr.append((int(v[0] * (cols/6) + cx), int(v[1] * (rows/4) + cy)))
 
             buf = [[' ' for _ in range(cols)] for _ in range(rows)]
