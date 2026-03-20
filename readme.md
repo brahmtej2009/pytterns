@@ -1,3 +1,5 @@
+Note: This project was submitted for optimization sidequest, please go to the end of the readme for the info on that.
+
 # Pytterns
 ### One stop library for all your Terminal Patterns
 
@@ -519,10 +521,36 @@ finally:
 
 Video in /images for the output
 
+# OPTIMIZATION 
+The framework is extremely easy to run and is PERFECT for beginners or even high level devs. I believe optimization is **BOTH**, making the code run better, and making the code simpler and easier to understand for the users. In this project, I have added several optimization stuff wayy before the sidequest even came out.
+### 1) Caching
+Pytterns has a module level cache, By caching the previously used patterns for future reuse, It massively got the cpu and disk io down. Without this, if you had a loop, it read the pattern file from the disk every time the loop ran, which was quite bad on the disk IO. To fix this, autoload system was implemented and the cache was added. (Explained below)
+
+### 2) Print buffer
+For the patterns that dont need a live print, like 2d shapes or panels, Pytterns has a proper buffer system. Instead of printing stuff piece by piece which shows weird artifacts on the terminal, Pytterns waits out the entire output and makes a buffer, and then prints it all at once nicely structured.
+
+As this is a framework for CLI, this fixes 100% of the tearing in SSH connection when used in quick loops.
+
+### 3) Centering Optimization
+As pytterns uses centering almost everywhere, and it was one of the main CPU Consumers, as each line had to be calculated multiple times to get the centering right due to the invisible color codes which counted in `len()` but were not visible in terminal, leading to tearing of things like Panels.
+
+I used regex based filtering, which filtered out the color codes and I got the centering logic to O(n) times relative to string length.
+
+### 4) Lazy / Priority Loading
+In pytterns, by default on import, NO module is loaded into the ram. I know that if this project goes big, there could be thousands of patterns built into this. So on import, there is only the core framework which is imported.
+
+Only the pattern which is run, is imported directly from the disk at that specific time of running the line of code.
+
+Also, While defining the `pt` variable, we can pass the functions we need to autoload, this would keep those loaded in ram at the very start of the program, so we can make snappy looking loops with already loaded stuff.
+
+### 5) Extremely detailed Docs
+You must have scrolled through the entire readme to reach this. I have put my complete hard work in this project, both in the code part as well as in the explanation part. I believe that the code wont be of any use if it cant be explained to other devs in simple language. The docs are written in very basic language and I have tried to put as much of examples and depth to it as possible.
+
 # Contribution
 
 This project is all open for your contributions! You can make more patterns for the default installation, and fix common rendering bugs.
 Lets together make the best python patterns library in the world!
+
 
 # License
 MIT
